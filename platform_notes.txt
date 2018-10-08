@@ -1,0 +1,202 @@
+python
+
+=============================
+			INSTALL NOTES
+=============================
+
+missing Linux install info:
+- python3 
+		-> Ubuntu 16.10+: sudo apt-get update
+											sudo apt-get install python3.6
+
+		-> Ubuntu 16.10-:	sudo apt-get install software-properties-common
+											sudo add-apt-repository ppa:deadsnakes/ppa
+											sudo apt-get update
+											sudo apt-get install python3.6
+
+		-> Fedora:				sudo dnf install python3
+
+- pip3 install
+		-> Ubuntu/Debian: sudo apt-get install python3-pip
+		-> Fedora:				sudo yum install python3-pip
+
+- venv install
+		->		sudo pip3 install virtualenv
+		(or)	python3 -m venv {{name_of_env}}
+	
+- mysql install (important for deployment too)
+		->		sudo apt-get install mysql-server
+					// set password to 'root' when prompted
+		->		sudo mysql -u root -p
+
+		-- in mysql shell --
+		->		CREATE USER flask@localhost IDENTIFIED BY 'flask';
+		->		GRANT ALL PRIVILEGES ON *.* TO flask@localhost;
+		->		FLUSH PRIVILEGES;
+
+		-- see user --
+		-> SHOW CREATE USER flask@localhost\G;
+
+		-- error in creation --
+		->		DROP USER flask@localhost;
+
+- mysql workbench
+		->		sudo apt-get install mysql-workbench
+		
+		create new connection with + symbol
+		- connection name: flask
+		- username: flask
+		- password: flask
+	
+=============================
+			COMMON QUESTIONS
+=============================
+
+dictionaries questions:
+	- dot notation with dictionaries in python
+
+=============================
+			PLATFORM NOTES
+=============================
+
+OOP (comments)
+
+OOP Quiz:
+
+	2. How can we set attributes to an instance of a class
+
+	A. Initializing our attributes with the __init__() function
+	B. We create attributes by defining multiple setter methods in our class
+	C. This is impossible
+	D. We can set individual attributes to each instance - one by one ***
+	E. Both A & D
+
+	*** kind of vague
+
+--------------
+
+development code cycle: (explore addition)
+
+	- writing and testing code efficiently
+		-> promoting quicker experimentation and debugging
+
+--------------
+
+TDD (comments)
+
+	- Why is TDD in OOP?
+	- obvious answer is perhaps, where else do you put it?
+
+--------------
+
+mysql (comments)
+
+	- DB Connection section is confusing:
+			- where is the database coming from?
+			- when/where did we create it?
+			- does it have data in it already?
+
+	- executable = cursor.execute(query, data)
+		-> 'executable' doesn't do anything anywhere (suggest remove)
+
+--------------
+
+modularized flask (comments)
+
+	- MVC steps
+		- "list the necessary steps when these routes are divided into MVC arch"
+			--> too vague and too much too quick	
+
+	- 'Very interestingly, we also have a file called __init__.py. Creating this 
+		file in a directory sets the directory up to be a module of the same name!'
+
+		--> what does this mean with respect to MVC?
+		--> why is this necessary?  What if I wanted to just make a module of a different name
+
+	- Routes
+		- Why place Routes in config folder?
+			--> unnecessary nesting for 101 mod
+
+	- Controllers
+		- "friends.py" another layer of abstraction to realize we can make
+			any number of controller files
+			--> just make a controller.py for understanding basic structure
+	
+	- Models
+		- "friend.py" - not only is the class file not capitalized but there is
+			nothing to gain by adding another nested folder structure
+			--> just polluting the concept of modularizing with __pycache__ folders
+					that are visually confusing to a beginner
+
+--------------
+
+MVC RECAP (suggest addition)
+
+MODELS
+
+	Models are...
+		- an OOP representation of the underlying data structure of a web application
+		- shared with any application that needs access to it
+
+		Should...
+			- represent any properties needed to store/manipulate data
+			- contain business logic (e.g. validation rules)
+			- avoid logic that deals directly with end users
+
+VIEWS (templates)
+
+	Views are...
+		- responsible for presenting models in the format that end users desire
+
+		Should...
+			- contain any logic that directly results in the presentation of HTML
+				- e.g. rendering templates, layouts, etc.
+
+CONTROLLERS
+
+	Controllers are... 
+		- the glue that binds models, views and other components together into a runnable application.
+		- responsible for dealing directly with end user requests
+
+		Should...
+		- be extremely skinny - possibly only a few dozen lines of code
+		- avoid SQL Statements
+		- avoid HTML or presentational markup
+
+BASIC STRUCTURE FOR FLASK (how I would structure a bare bones app for first time)
+
+project_folder
+├── app
+│   ├── controllers.py
+│   ├── database.py
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── static
+│   └── templates
+│       └── index.html
+└── server.py
+
+
+- I am of the mind currently that it might be easier to build out an app from scratch
+	understanding the steps along the way so it's more along the lines of:
+		"we need to make X file to handle X functionality"
+	as opposed to:
+		"figure out how to break up a server file based on high level theory about MVC structure"
+	
+	the latter I think is good as a 2nd or third assignment but I think it's obfuscating
+	the decision process and the "why"s of MVC structure
+--------------
+
+REST API?  Mean has quite a bit on REST, in a similar fashion there could be
+some potential benefit to offering a python version for the optional assignment
+more advanced students will take advantage of
+
+Could start off building a new modularized flask app step by step with the end
+goal being a functioning RESTful API
+
+if you run this project, you will get a printout on each url that show pieces of how
+	each link is assembled - I used a basic REST structure as the vehicle for it but
+	that is secondary to the aims of seeing how the diplayed output is constructed with
+	models and controllers before the rendering of the template
+
