@@ -1,7 +1,8 @@
-from flask import session, flash
+from flask import session, flash, abort
+from app.database import users
 
 
-class UserManager:
+class UserAPI:
     def validate(self, user):
         errors = {}
         if len(user.first_name) < 1:
@@ -16,19 +17,16 @@ class UserManager:
         # if '_flashes' in session.keys():
         if errors:
             print(session['_flashes'])
-            return False
-        return True
+            return "Invalid User"
+        return "Creating New User"
 
     def get_all(self):
-        db_connection = "connecting to database"
-        query = "SELECT * FROM users"
-        result = "{} {}".format(db_connection, query)
-        return result
+        return users
 
     def get_one(self, id):
-        db_connection = "connecting to database"
-        query = "SELECT * FROM users WHERE user_id={}".format(id)
-        result = "{} {}".format(db_connection, query)
+        result = [user for user in users if user['id'] == id]
+        if len(result) == 0:
+            abort(404)
         return result
 
     def create(self, user):
